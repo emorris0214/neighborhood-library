@@ -29,8 +29,10 @@ public class APP {
         inventory[18] = new Book(19, "978-0-7434-7711-6", "MacBeth");
         inventory[19] = new Book(20, "978-0-486-1234-6", "Beowulf");
 
+        // only true while running
         boolean running = true;
 
+        // while loop for "running" that gives the user options for input when checking our library
         while (running){
             // Menu with options
             System.out.println("\n Welcome to the Neighborhood Library! ");
@@ -55,10 +57,12 @@ public class APP {
             }
         }
     }
+    // showAvailableBooks method calling for the scanner and checking the inventory
     private static void showAvailableBooks(Scanner keyboard, Book[] inventory){
         System.out.println("\n Available Books: ");
         boolean bookAvailable = false;
 
+        // for loop that checks inventory (Book.java) if the book is checked out, and if not, prints a format string of the IDs, ISBNs, and Titles
         for (Book book : inventory ){
             if (!book.getIsCheckedOut()) {
                 System.out.printf("ID: %d | ISBN: %s | Title: %s ", book.getId(), book.getIsbn(), book.getTitle());
@@ -66,21 +70,26 @@ public class APP {
             }
         }
 
+        // if statement to check if the book is available and if it isn't prints no books
         if (!bookAvailable) {
             System.out.println("No books are currently available to check out");
             return;
         }
 
+        // Taking user input for the book ID they would like to check out
         System.out.println("\nPlease enter the ID of the book to check it out or 'X' to return to home screen: ");
         String input = keyboard.nextLine();
 
+        // Press 'x' to exit program
         if (input.equalsIgnoreCase("X")){
             return;
         }
 
+        // changing our string ID input into an integer
         int bookId = Integer.parseInt(input);
         Book bookToCheckOut = findBookById(inventory, bookId);
 
+        // Checking to see if book is checked out, if not, you can check it out, then prints who checked out the book
         if (bookToCheckOut != null && !bookToCheckOut.getIsCheckedOut()){
             System.out.println("Please enter your name to check out this book: ");
             String name = keyboard.nextLine();
@@ -90,10 +99,13 @@ public class APP {
             System.out.println("Invalid ID or the book has already been checked out, sorry.");
         }
     }
+    // method for showing what books are checked out (Only checked out if still running the program)
+    // Calls scanner and book inventory
     private static void showCheckedOutBooks(Scanner keyboard, Book[] inventory) {
         System.out.println("\n Checked Out Books: ");
         boolean bookCheckedOut = false;
 
+        // for loop that checks inventory (Book.java) if the book is checked out, prints a format string of the IDs, ISBNs, and Titles
         for(Book book : inventory){
             if (book.getIsCheckedOut()){
                 System.out.printf("ID: %d | ISBN: %s | Title: %s | Checked Out to %s%n", book.getId(), book.getIsbn(), book.getTitle(), book.getCheckedOutTo());
@@ -101,14 +113,17 @@ public class APP {
             }
         }
 
+        // if-statement calling the boolean from earlier that prints when no books are checked out
         if (!bookCheckedOut){
             System.out.println("No books are currently checked out.");
             return;
         }
 
+        // Option to check the book in after checking it out or going back to home
         System.out.println("Enter 'C' to check in a book or 'X' to return to home screen.");
         String input = keyboard.nextLine();
 
+        // case senitivity off for options, allows user to input the ID # (1-20) and changes it to an integer corresponding with the book
         if (input.equalsIgnoreCase("X")){
             return;
         } else if (input.equalsIgnoreCase("C")) {
@@ -127,6 +142,8 @@ public class APP {
             System.out.println("Invalid input.");
         }
     }
+    // Method to find the book by its ID
+    // Calling for the index value of the book in inventory and ID (1 off since index starts at 0)
     private static Book findBookById(Book[] inventory, int id) {
         for (Book book : inventory) {
             if (book.getId() == id) {
